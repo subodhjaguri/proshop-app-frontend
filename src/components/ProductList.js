@@ -1,34 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import Rating from "./Rating";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/productActions";
 
 export default function ProductList({ navigation }) {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
-  const getProducts = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://192.168.0.105:5000/api/products"
-      );
-      setProducts(data);
-      console.log(data);
-    } catch (error) {
-      console.log("error while fetching" + error);
-    }
-  };
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   const renderItem = ({ item }) => (
     <View style={styles.products}>
