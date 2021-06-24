@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import Rating from "../components/Rating";
 import globalStyle from "../components/style";
 
 export default function ProductScreen({ route }) {
+  const [qty, setQty] = useState(1);
   const product = route.params;
+
   return (
     <View style={globalStyle.container}>
       <Text style={globalStyle.heading}>Product Screen</Text>
@@ -23,10 +25,47 @@ export default function ProductScreen({ route }) {
           />
           {/* <Text style={styles.price}>${product.price}</Text> */}
         </View>
+
         <View style={styles.product_description}>
           <Text style={styles.description_title}>Description :</Text>
           <Text>{product.description}</Text>
         </View>
+
+        {product.countInStock === 0 ? null : (
+          <View style={styles.quantity_container}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
+              Quantity :
+            </Text>
+            <View style={styles.product_quantity}>
+              <Button
+                onPress={() => setQty(qty - 1)}
+                disabled={qty === 1}
+                title="-"
+              />
+              <Text
+                style={{
+                  width: "25%",
+                  alignSelf: "center",
+
+                  textAlign: "center",
+                }}
+              >
+                {qty}
+              </Text>
+              <Button
+                onPress={() => setQty(qty + 1)}
+                disabled={product.countInStock - qty <= 0}
+                title="+"
+              />
+            </View>
+          </View>
+        )}
+
         <View style={styles.product_summary}>
           <View style={styles.product_summary_rows}>
             <Text>Price</Text>
@@ -35,8 +74,12 @@ export default function ProductScreen({ route }) {
           <View style={styles.product_summary_rows}>
             <Text>Status</Text>
             <Text>
-              {product.countInStock > 0 ? "In stock" : "Out of stock"}
+              {product.countInStock - qty > 0 ? "In stock" : "Out of stock"}
             </Text>
+          </View>
+          <View style={styles.product_summary_rows}>
+            <Text>Quantity</Text>
+            <Text>{qty}</Text>
           </View>
           <Button disabled={product.countInStock === 0} title="add to cart" />
         </View>
@@ -93,5 +136,16 @@ const styles = StyleSheet.create({
     borderBottomColor: "grey",
     paddingVertical: 5,
     justifyContent: "space-around",
+  },
+  quantity_container: {
+    width: "80%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  product_quantity: {
+    flexDirection: "row",
+    marginVertical: "5%",
+    justifyContent: "flex-end",
   },
 });

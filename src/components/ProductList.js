@@ -10,6 +10,8 @@ import {
 import Rating from "./Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
+import Loader from "./Loader";
+import Message from "./Message";
 
 export default function ProductList({ navigation }) {
   const dispatch = useDispatch();
@@ -43,12 +45,18 @@ export default function ProductList({ navigation }) {
   );
   return (
     <View style={styles.container}>
-      <FlatList
-        numColumns={2}
-        data={products}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-      />
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message>{error}</Message>
+      ) : (
+        <FlatList
+          numColumns={2}
+          data={products}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+        />
+      )}
     </View>
   );
 }
@@ -56,6 +64,7 @@ export default function ProductList({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    // height: "100%",
 
     // padding: 5,
     justifyContent: "center",
