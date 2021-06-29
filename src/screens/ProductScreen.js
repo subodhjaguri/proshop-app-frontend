@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { navigateTo } from "../../navigations/RootNavigation";
 import Rating from "../components/Rating";
 import globalStyle from "../components/style";
 
 export default function ProductScreen({ route }) {
   const [qty, setQty] = useState(1);
-  const product = route.params;
+  const product = route.params.item;
+
+  const addToCartHandler = () => {
+    navigateTo("CartScreen", {
+      // product: product,
+      id: product._id,
+      qty: qty,
+    });
+  };
 
   return (
     <View style={globalStyle.container}>
@@ -81,7 +90,11 @@ export default function ProductScreen({ route }) {
             <Text>Quantity</Text>
             <Text>{qty}</Text>
           </View>
-          <Button disabled={product.countInStock === 0} title="add to cart" />
+          <Button
+            onPress={addToCartHandler}
+            disabled={product.countInStock === 0}
+            title="add to cart"
+          />
         </View>
       </View>
     </View>

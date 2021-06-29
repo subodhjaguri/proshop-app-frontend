@@ -12,8 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Loader from "./Loader";
 import Message from "./Message";
+import { navigateTo } from "../../navigations/RootNavigation";
 
-export default function ProductList({ navigation }) {
+export default function ProductList() {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
@@ -27,7 +28,11 @@ export default function ProductList({ navigation }) {
     <View style={styles.products}>
       <TouchableOpacity
         style={styles.product}
-        onPress={() => navigation.navigate("ProductScreen", item)}
+        onPress={() =>
+          navigateTo("ProductScreen", {
+            item: item,
+          })
+        }
       >
         <Image
           style={styles.product_image}
