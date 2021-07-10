@@ -10,8 +10,8 @@ export default function ProductScreen({ route }) {
 
   const addToCartHandler = () => {
     navigateTo("CartScreen", {
-      // product: product,
-      id: product._id,
+      product: product,
+      // id: product._id,
       qty: qty,
     });
   };
@@ -88,7 +88,7 @@ export default function ProductScreen({ route }) {
           </View>
           <View style={styles.product_summary_rows}>
             <Text>Quantity</Text>
-            <Text>{qty}</Text>
+            <Text>{product.countInStock > 0 ? qty : 0}</Text>
           </View>
           <Button
             onPress={addToCartHandler}

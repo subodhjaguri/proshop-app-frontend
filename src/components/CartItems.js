@@ -3,22 +3,29 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { StyleSheet, Text, View, Button, Image, FlatList } from "react-native";
 import globalStyle from "./style";
-import { widthPercentageToDP } from "react-native-responsive-screen";
-import { RFPercentage } from "react-native-responsive-fontsize";
-import { addToCart } from "../actions/cartActions";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { addToCart, removeFromCart } from "../actions/cartActions";
+import { navigateTo } from "../../navigations/RootNavigation";
 
-export default function CartItems({ productId, qty }) {
+export default function CartItems({ qty, product }) {
   // const qty = route.params.qty;
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const total = cartItems
+    .reduce((acc, item) => acc + item.qty * item.price, 0)
+    .toFixed(2);
   //   console.log("items from cart", cartItems);
 
   useEffect(() => {
-    if (productId) {
-      dispatch(addToCart(productId, qty));
+    if (product) {
+      dispatch(addToCart(qty, product));
     }
-  }, [dispatch, productId, qty]);
+  }, [dispatch, product, qty]);
 
   const renderItem = ({ item }) => (
     <View style={styles.item_container}>
@@ -41,7 +48,7 @@ export default function CartItems({ productId, qty }) {
             <Text style={styles.text}>$ {item.price}</Text>
             <View style={styles.product_quantity}>
               <Button
-                onPress={() => dispatch(addToCart(item.product, item.qty - 1))}
+                onPress={() => dispatch(addToCart(item.qty - 1, item.product))}
                 disabled={item.qty === 1}
                 title="-"
               />
@@ -55,7 +62,7 @@ export default function CartItems({ productId, qty }) {
                 {item.qty}
               </Text>
               <Button
-                onPress={() => dispatch(addToCart(item.product, item.qty + 1))}
+                onPress={() => dispatch(addToCart(item.qty + 1, item.product))}
                 disabled={item.countInStock - item.qty <= 0}
                 title="+"
               />
@@ -73,7 +80,7 @@ export default function CartItems({ productId, qty }) {
         </View>
         <View style={{ width: "45%" }}>
           <Button
-            //    onPress={console.log("clicked")}
+            onPress={() => dispatch(removeFromCart(item.id))}
             title="remove"
           />
         </View>
@@ -82,19 +89,67 @@ export default function CartItems({ productId, qty }) {
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={cartItems}
         renderItem={renderItem}
-        keyExtractor={(item) => item.product}
+        keyExtractor={(item) => item.id}
       />
-
-      <View style={styles.price_details}></View>
+      {cartItems.length != 0 ? (
+        <View style={styles.price_details}>
+          <Text
+            style={{
+              fontSize: RFPercentage(2.1),
+              fontWeight: "bold",
+              color: "grey",
+              margin: "3%",
+              borderBottomColor: "grey",
+              borderBottomWidth: 1,
+            }}
+          >
+            PRICE DETAILS ({cartItems.reduce((acc, item) => acc + item.qty, 0)}{" "}
+            items)
+          </Text>
+          <View style={styles.price_description}>
+            <Text> Delivery charges </Text>
+            <Text style={{ color: "green" }}>FREE</Text>
+          </View>
+          <View style={styles.price_description}>
+            <Text> Total amount </Text>
+            <Text>{total} </Text>
+          </View>
+          <View style={styles.place_order}>
+            <Text>{total}</Text>
+            <View>
+              <Button
+                title="Place Order"
+                onPress={() => console.log("order Placed")}
+              />
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.empty_cart}>
+          <Text
+            style={{
+              fontSize: RFPercentage(3),
+              color: "black",
+              marginVertical: 5,
+            }}
+          >
+            Your cart is empty
+          </Text>
+          <Button title="GO TO HOME" onPress={() => navigateTo("HomeScreen")} />
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    height: heightPercentageToDP("90%"),
+  },
   item_container: {
     width: widthPercentageToDP("90%"),
     marginVertical: 6,
@@ -133,5 +188,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: "5%",
     justifyContent: "center",
+  },
+  price_details: {
+    margin: "3%",
+    marginVertical: 5,
+  },
+  price_description: {
+    flexDirection: "row",
+    paddingVertical: "0.1%",
+    justifyContent: "space-between",
+    marginHorizontal: "3%",
+    marginVertical: "0.3%",
+  },
+  place_order: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    elevation: 5,
+    backgroundColor: "#F5F5F5",
+    marginTop: "5%",
+  },
+  empty_cart: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
