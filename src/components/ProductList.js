@@ -51,7 +51,7 @@ export default function ProductList() {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <Loader message="Loading Product List ..." />
       ) : error ? (
         <Message>{error}</Message>
       ) : (

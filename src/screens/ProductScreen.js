@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { navigateTo } from "../../navigations/RootNavigation";
+import Header from "../components/Header";
 import Rating from "../components/Rating";
 import globalStyle from "../components/style";
 
@@ -18,6 +19,7 @@ export default function ProductScreen({ route }) {
 
   return (
     <View style={globalStyle.container}>
+      <Header />
       <Text style={globalStyle.heading}>Product Screen</Text>
       <View style={styles.container}>
         <Image

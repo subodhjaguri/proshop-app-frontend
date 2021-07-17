@@ -11,8 +11,6 @@ const globalStyle = {
     alignItems: "center",
     marginTop: StatusBar.currentHeight + 10,
     flex: 1,
-
-    alignItems: "center",
   },
   heading: {
     fontSize: 25,

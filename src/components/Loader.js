@@ -6,18 +6,18 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function Loader() {
+export default function Loader({ message }) {
   return (
     <View style={styles.container}>
       <ActivityIndicator style={{ padding: 20 }} size={"large"} color="black" />
-      <Text style={styles.text}>Loading Product List . . .</Text>
+      <Text style={styles.text}>{message} </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: hp("60%"),
+    // height: hp("60%"),
 
     justifyContent: "center",
   },

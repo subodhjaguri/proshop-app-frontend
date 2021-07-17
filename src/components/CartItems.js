@@ -16,9 +16,12 @@ export default function CartItems({ qty, product }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-  const total = cartItems
-    .reduce((acc, item) => acc + item.qty * item.price, 0)
-    .toFixed(2);
+  const total =
+    cartItems.length != 0
+      ? cartItems
+          .reduce((acc, item) => acc + item.qty * item.price, 0)
+          .toFixed(2)
+      : 0;
   //   console.log("items from cart", cartItems);
 
   useEffect(() => {
@@ -95,7 +98,7 @@ export default function CartItems({ qty, product }) {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      {cartItems.length != 0 ? (
+      {cartItems.length != 0 && (
         <View style={styles.price_details}>
           <Text
             style={{
@@ -107,7 +110,10 @@ export default function CartItems({ qty, product }) {
               borderBottomWidth: 1,
             }}
           >
-            PRICE DETAILS ({cartItems.reduce((acc, item) => acc + item.qty, 0)}{" "}
+            PRICE DETAILS (
+            {cartItems.length != 0
+              ? cartItems.reduce((acc, item) => acc + item.qty, 0)
+              : 0}
             items)
           </Text>
           <View style={styles.price_description}>
@@ -127,19 +133,6 @@ export default function CartItems({ qty, product }) {
               />
             </View>
           </View>
-        </View>
-      ) : (
-        <View style={styles.empty_cart}>
-          <Text
-            style={{
-              fontSize: RFPercentage(3),
-              color: "black",
-              marginVertical: 5,
-            }}
-          >
-            Your cart is empty
-          </Text>
-          <Button title="GO TO HOME" onPress={() => navigateTo("HomeScreen")} />
         </View>
       )}
     </View>
