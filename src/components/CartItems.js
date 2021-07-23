@@ -16,6 +16,8 @@ export default function CartItems({ qty, product }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const total =
     cartItems.length != 0
       ? cartItems
@@ -29,6 +31,14 @@ export default function CartItems({ qty, product }) {
       dispatch(addToCart(qty, product));
     }
   }, [dispatch, product, qty]);
+
+  const placeOrderHandler = () => {
+    if (userInfo) {
+      navigateTo("ShippingScreen");
+    } else {
+      navigateTo("LoginScreen");
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.item_container}>
@@ -127,10 +137,7 @@ export default function CartItems({ qty, product }) {
           <View style={styles.place_order}>
             <Text>{total}</Text>
             <View>
-              <Button
-                title="Place Order"
-                onPress={() => console.log("order Placed")}
-              />
+              <Button title="Place Order" onPress={placeOrderHandler} />
             </View>
           </View>
         </View>

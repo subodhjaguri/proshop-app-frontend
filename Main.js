@@ -7,32 +7,38 @@ import { saveCartData } from "./src/actions/cartActions";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppNavigator from "./navigations/index";
-import { saveUserInfo } from "./src/actions/userActions";
+import { saveUserData } from "./src/actions/userActions";
 
 export default function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getData();
+    getCartData();
     getUserData();
   }, []);
 
-  const getData = async () => {
+  const getCartData = async () => {
     try {
       const jsoncartItems = await AsyncStorage.getItem("cartItems");
       const cartItems =
         jsoncartItems != null ? JSON.parse(jsoncartItems) : null;
-      console.log("item from cart", cartItems);
+
+      const jsonShippingAddress = await AsyncStorage.getItem("shippingAddress");
+      const shippingAddress =
+        jsonShippingAddress != null ? JSON.parse(jsonShippingAddress) : null;
+      // console.log("item from cart", cartItems);
+
       dispatch(saveCartData(cartItems));
     } catch (e) {}
   };
 
   const getUserData = async () => {
     try {
-      const jsonUserInfo = await AsyncStorage.getItem("userInfo");
-      const userInfo = jsonUserInfo != null ? JSON.parse(jsonUserInfo) : null;
-      console.log("userInfo", userInfo);
-      // dispatch(saveUserInfo(userInfo));
+      const jsonUserData = await AsyncStorage.getItem("userData");
+
+      const userData =
+        jsonUserData != null ? JSON.parse(jsonUserData).userInfo : null;
+      dispatch(saveUserData(userData));
     } catch (e) {}
   };
 

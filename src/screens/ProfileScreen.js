@@ -1,32 +1,54 @@
-import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import Header from "../components/Header";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import globalStyle from "../components/style";
-import { Formik } from "formik";
-import { RFPercentage } from "react-native-responsive-fontsize";
+import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { navigateTo } from "../../navigations/RootNavigation";
-import { register } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import { RFPercentage } from "react-native-responsive-fontsize";
+import { Formik } from "formik";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
-export default function RegisterScreen() {
+export default function ProfileScreen() {
   const [message, setMessage] = useState(null);
   const dispatch = useDispatch();
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const userDetails = useSelector((state) => state.userDetails);
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  // console.log("userinfoo", userInfo);
+  const { error, loading, user } = userDetails;
+
+  console.log("userdata", user);
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigateTo("LoginScreen");
+    } else {
+      if (user.name != userInfo.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        dispatch(getUserDetails("profile"));
+      }
+    }
+  }, [dispatch, userInfo, user]);
+
   return (
     <View style={globalStyle.container}>
       <Header />
-      <Text style={globalStyle.heading}>REGISTER SCREEN</Text>
+      <Text style={globalStyle.heading}>USER PROFILE</Text>
       {message && <Message variant="danger">{message}</Message>}
+      {success && <Message variant="success">Profile updated</Message>}
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
       <View style={styles.form_container}>
         <Formik
+          enableReinitialize
           initialValues={{
-            name: "",
-            email: "",
+            email: user.email,
+            name: user.name,
             password: "",
             confirmPassword: "",
           }}
@@ -34,14 +56,15 @@ export default function RegisterScreen() {
             console.log(values);
             if (values.password != values.confirmPassword) {
               setMessage("Passwords do not match");
-            } else if (
-              values.name === "" ||
-              values.email === "" ||
-              values.password === ""
-            ) {
-              setMessage("Feilds are empty");
             } else {
-              dispatch(register(values.name, values.email, values.password));
+              dispatch(
+                updateUserProfile({
+                  id: user._id,
+                  name: values.name,
+                  email: values.email,
+                  password: values.password,
+                })
+              );
             }
           }}
         >
@@ -77,7 +100,7 @@ export default function RegisterScreen() {
                 onChangeText={props.handleChange("confirmPassword")}
                 value={props.values.confirmPassword}
               />
-              <Button title="Register" onPress={props.handleSubmit} />
+              <Button title="Update" onPress={props.handleSubmit} />
             </View>
           )}
         </Formik>

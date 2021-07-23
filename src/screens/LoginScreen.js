@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
-import { goBack, navigateTo } from "../../navigations/RootNavigation";
+import { navigateTo } from "../../navigations/RootNavigation";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 

@@ -5,7 +5,8 @@ import ProductScreen from "../src/screens/ProductScreen";
 import CartScreen from "../src/screens/CartScreen";
 import LoginScreen from "../src/screens/LoginScreen";
 import RegisterScreen from "../src/screens/RegisterScreen";
-import ExampleScreen from "../src/screens/ExampleScreen";
+import ProfileScreen from "../src/screens/ProfileScreen";
+import ShippingScreen from "../src/screens/ShippingScreen";
 
 const HomeNavigatorOptions = {
   headerShown: false,
@@ -48,8 +49,14 @@ const HomeNavigation = () => {
       />
 
       <HomeStack.Screen
-        name="ExampleScreen"
-        component={ExampleScreen}
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={HomeNavigatorOptions}
+      />
+
+      <HomeStack.Screen
+        name="ShippingScreen"
+        component={ShippingScreen}
         options={HomeNavigatorOptions}
       />
     </HomeStack.Navigator>

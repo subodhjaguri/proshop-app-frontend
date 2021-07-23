@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
   SAVE_CART_DATA,
 } from "../constants/cartConstants";
 
@@ -43,3 +44,22 @@ export const removeFromCart = (id) => async (dispatch, getState) => {
   const jsonCartData = JSON.stringify(getState().cart.cartItems);
   AsyncStorage.setItem("cartItems", jsonCartData);
 };
+
+export const saveShippingAddress = (data) => (dispatch) => {
+  dispatch({
+    type: CART_SAVE_SHIPPING_ADDRESS,
+    payload: data,
+  });
+
+  const jsonShippingAddress = JSON.stringify(data);
+  AsyncStorage.setItem("shippingAddress", jsonShippingAddress);
+};
+
+// export const savePaymentMethod = (data) => (dispatch) => {
+//   dispatch({
+//     type: CART_SAVE_PAYMENT_METHOD,
+//     payload: data,
+//   })
+
+//   localStorage.setItem('paymentMethod', JSON.stringify(data))
+// }
