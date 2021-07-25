@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { navigateTo } from "../../navigations/RootNavigation";
 
 export default function CheckoutSteps({ step1, step2, step3, step4 }) {
@@ -7,50 +7,59 @@ export default function CheckoutSteps({ step1, step2, step3, step4 }) {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "center",
+        // justifyContent: "space-between",
         paddingHorizontal: "2%",
         marginVertical: "5%",
       }}
     >
       {step1 ? (
-        <Button
-          style={{ marginHorizital: "2%" }}
-          title="Sign in"
+        <TouchableOpacity
+          style={{ marginHorizontal: "2%" }}
           onPress={() => navigateTo("LoginScreen")}
-        />
+        >
+          <Text style={{ fontWeight: "bold" }}>Sign In </Text>
+        </TouchableOpacity>
       ) : (
-        <Button style={{ marginHorizital: "2%" }} disabled title="Sign in" />
+        <TouchableOpacity style={{ marginHorizontal: "2%" }} disabled>
+          <Text style={{ fontWeight: "bold", color: "grey" }}>Sign In</Text>
+        </TouchableOpacity>
       )}
       {step2 ? (
-        <Button
-          style={{ marginHorizital: "2%" }}
-          title="Shipping"
+        <TouchableOpacity
+          style={{ marginHorizontal: "2%" }}
           onPress={() => navigateTo("ShippingScreen")}
-        />
+        >
+          <Text style={{ fontWeight: "bold" }}>Shipping </Text>
+        </TouchableOpacity>
       ) : (
-        <Button style={{ marginHorizital: "2%" }} disabled title="Shipping" />
+        <TouchableOpacity style={{ marginHorizontal: "2%" }} disabled>
+          <Text style={{ fontWeight: "bold", color: "grey" }}>Shipping</Text>
+        </TouchableOpacity>
       )}
+
       {step3 ? (
-        <Button
-          style={{ marginHorizital: "2%" }}
-          title="Payment"
+        <TouchableOpacity
+          style={{ marginHorizontal: "2%" }}
           onPress={() => navigateTo("PaymentScreen")}
-        />
+        >
+          <Text style={{ fontWeight: "bold" }}>Payment </Text>
+        </TouchableOpacity>
       ) : (
-        <Button style={{ marginHorizital: "2%" }} disabled title="Payment" />
+        <TouchableOpacity style={{ marginHorizontal: "2%" }} disabled>
+          <Text style={{ fontWeight: "bold", color: "grey" }}>Payment</Text>
+        </TouchableOpacity>
       )}
       {step4 ? (
-        <Button
-          style={{ marginHorizital: "2%" }}
-          title="Place Order"
-          onPress={() => navigateTo("PlaceOrderScreen")}
-        />
+        <TouchableOpacity
+          style={{ marginHorizontal: "2%" }}
+          onPress={() => navigateTo("PaymentScreen")}
+        >
+          <Text style={{ fontWeight: "bold" }}>PlaceOrder </Text>
+        </TouchableOpacity>
       ) : (
-        <Button
-          style={{ marginHorizital: "2%" }}
-          disabled
-          title="Place Order"
-        />
+        <TouchableOpacity style={{ marginHorizontal: "2%" }} disabled>
+          <Text style={{ fontWeight: "bold", color: "grey" }}>PlaceOrder</Text>
+        </TouchableOpacity>
       )}
     </View>
   );

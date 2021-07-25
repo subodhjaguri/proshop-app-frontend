@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -62,6 +63,7 @@ export default function ProductList() {
           keyExtractor={(item) => item._id}
         />
       )}
+      <View style={{ height: 200 }}></View>
     </View>
   );
 }
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
     // padding: 5,
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 45,
   },
   products: {
     margin: 20,

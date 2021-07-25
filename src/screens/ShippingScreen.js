@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Text, TextInput, View, Button } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { useDispatch, useSelector } from "react-redux";
+import { navigateTo } from "../../navigations/RootNavigation";
 import { saveShippingAddress } from "../actions/cartActions";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Header from "../components/Header";
@@ -10,6 +11,7 @@ import globalStyle from "../components/style";
 export default function ShippingScreen() {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+
   const dispatch = useDispatch();
 
   return (
@@ -30,6 +32,7 @@ export default function ShippingScreen() {
           }}
           onSubmit={(values) => {
             dispatch(saveShippingAddress(values));
+            navigateTo("PaymentScreen");
           }}
         >
           {(props) => (

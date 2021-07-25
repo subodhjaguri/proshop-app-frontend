@@ -3,7 +3,7 @@ import "react-native-gesture-handler";
 import React, { useEffect } from "react";
 import { StyleSheet, StatusBar } from "react-native";
 
-import { saveCartData } from "./src/actions/cartActions";
+import { saveCartData, saveShippingAddress } from "./src/actions/cartActions";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppNavigator from "./navigations/index";
@@ -29,6 +29,7 @@ export default function Main() {
       // console.log("item from cart", cartItems);
 
       dispatch(saveCartData(cartItems));
+      dispatch(saveShippingAddress(shippingAddress));
     } catch (e) {}
   };
 
