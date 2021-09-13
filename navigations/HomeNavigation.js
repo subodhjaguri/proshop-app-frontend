@@ -9,6 +9,7 @@ import ProfileScreen from "../src/screens/ProfileScreen";
 import ShippingScreen from "../src/screens/ShippingScreen";
 import PaymentScreen from "../src/screens/PaymentScreen";
 import PlaceOrderScreen from "../src/screens/PlaceOrderScreen";
+import StripePaymentScreen from "../src/screens/StripePaymentScreen";
 
 const HomeNavigatorOptions = {
   headerShown: false,
@@ -71,6 +72,12 @@ const HomeNavigation = () => {
       <HomeStack.Screen
         name="PlaceOrderScreen"
         component={PlaceOrderScreen}
+        options={HomeNavigatorOptions}
+      />
+
+      <HomeStack.Screen
+        name="StripePaymentScreen"
+        component={StripePaymentScreen}
         options={HomeNavigatorOptions}
       />
     </HomeStack.Navigator>

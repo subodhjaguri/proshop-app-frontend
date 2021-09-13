@@ -4,6 +4,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
+  EMPTY_CART,
   SAVE_CART_DATA,
 } from "../constants/cartConstants";
 
@@ -43,6 +44,14 @@ export const removeFromCart = (id) => async (dispatch, getState) => {
   });
   const jsonCartData = JSON.stringify(getState().cart.cartItems);
   AsyncStorage.setItem("cartItems", jsonCartData);
+};
+export const emptyCart = () => async (dispatch, getState) => {
+  dispatch({
+    type: EMPTY_CART,
+    payload: {
+      cartItems: [],
+    },
+  });
 };
 
 export const saveShippingAddress = (data) => (dispatch) => {

@@ -18,7 +18,7 @@ export default function PaymentScreen() {
     navigateTo("ShippingScreen");
   }
   const [paymentMethod, setPaymentMethod] = useState("Paypal");
-  console.log(paymentMethod);
+
   const data = [
     {
       label: "Paypal",
@@ -60,6 +60,12 @@ export default function PaymentScreen() {
             source={require("../components/PaymentImages/stripe.png")}
           />
         )}
+      </View>
+      <View style={{ width: "60%", marginVertical: "5%" }}>
+        <Button
+          title="Proceed"
+          onPress={() => navigateTo("StripePaymentScreen")}
+        />
       </View>
     </View>
   );
